@@ -17,9 +17,10 @@
       </div>
       <div v-show="hasError" style="color: red">할 일을 입력해주세요!</div>
     </form>
-    <div v-for="todo in todos" :key="todo.id" class="card mt-2">
-      <div class="card-body p-2">
-        <div class="form-check">
+    <div v-if="!todos.length">추가된 Todo가 없습니다!</div>
+    <div v-for="(todo, index) in todos" :key="todo.id" class="card mt-2">
+      <div class="card-body p-2 d-flex align-items-center">
+        <div class="form-check flex-grow-1">
           <input
             class="form-check-input"
             type="checkbox"
@@ -28,6 +29,11 @@
           <label :class="{ todo: todo.completed }" class="form-check-label">{{
             todo.subject
           }}</label>
+        </div>
+        <div>
+          <button class="btn btn-danger btn-sm" @click="deleteTodo(index)">
+            Delete
+          </button>
         </div>
       </div>
     </div>
@@ -60,7 +66,11 @@ export default {
       }
     };
 
-    return { onSubmit, todo, todos, hasError, todoStyle };
+    const deleteTodo = (index) => {
+      todos.value.splice(index, 1);
+    };
+
+    return { onSubmit, todo, todos, hasError, todoStyle, deleteTodo };
   },
 };
 </script>
