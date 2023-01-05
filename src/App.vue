@@ -1,22 +1,8 @@
 <template>
   <div class="container">
     <h2>To-Do List</h2>
-    <form @submit.prevent="onSubmit">
-      <div class="d-flex">
-        <div class="flex-grow-1 mr-2">
-          <input
-            class="form-control"
-            type="text"
-            v-model="todo"
-            placeholder="Type new to-do"
-          />
-        </div>
-        <div>
-          <button class="btn btn-primary" type="submit">Add</button>
-        </div>
-      </div>
-      <div v-show="hasError" style="color: red">할 일을 입력해주세요!</div>
-    </form>
+    <TodoSimpleForm @add-todo="addTodo" />
+
     <div v-if="!todos.length">추가된 Todo가 없습니다!</div>
     <div v-for="(todo, index) in todos" :key="todo.id" class="card mt-2">
       <div class="card-body p-2 d-flex align-items-center">
@@ -42,35 +28,24 @@
 
 <script>
 import { ref } from "vue";
-export default {
-  setup() {
-    const todo = ref("");
-    const todos = ref([]);
-    const hasError = ref(false);
-    const todoStyle = {
-      textDecoration: "line-through",
-      color: "gray",
-    };
+import TodoSimpleForm from "./components/TodoSimpleForm.vue";
 
-    const onSubmit = () => {
-      if (todo.value === "") {
-        hasError.value = true;
-      } else {
-        todos.value.push({
-          id: Date.now(),
-          subject: todo.value,
-          completed: false,
-        });
-        hasError.value = false;
-        todo.value = "";
-      }
+export default {
+  components: {
+    TodoSimpleForm,
+  },
+  setup() {
+    const todos = ref([]);
+
+    const addTodo = (todo) => {
+      todos.value.push(todo);
     };
 
     const deleteTodo = (index) => {
       todos.value.splice(index, 1);
     };
 
-    return { onSubmit, todo, todos, hasError, todoStyle, deleteTodo };
+    return { addTodo, todos, deleteTodo };
   },
 };
 </script>
