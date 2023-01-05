@@ -19,7 +19,14 @@
     </form>
     <div v-for="todo in todos" :key="todo.id" class="card mt-2">
       <div class="card-body p-2">
-        {{ todo.subject }}
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            v-model="todo.completed"
+          />
+          <label class="form-check-label">{{ todo.subject }}</label>
+        </div>
       </div>
     </div>
   </div>
@@ -30,24 +37,20 @@ import { ref } from "vue";
 export default {
   setup() {
     const todo = ref("");
-    const todos = ref([
-      {
-        id: 1,
-        subject: "go home",
-      },
-      {
-        id: 2,
-        subject: "go school",
-      },
-    ]);
+    const todos = ref([]);
     const hasError = ref(false);
 
     const onSubmit = () => {
       if (todo.value === "") {
         hasError.value = true;
       } else {
-        todos.value.push({ id: Date.now(), subject: todo.value });
+        todos.value.push({
+          id: Date.now(),
+          subject: todo.value,
+          completed: false,
+        });
         hasError.value = false;
+        todo.value = "";
       }
     };
 
