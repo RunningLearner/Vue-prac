@@ -4,7 +4,11 @@
     <TodoSimpleForm @add-todo="addTodo" />
 
     <div v-if="!todos.length">추가된 Todo가 없습니다!</div>
-    <TodoList :todos="todos" />
+    <TodoList
+      :todos="todos"
+      @toggle-todo="toggleTodo"
+      @delete-todo="deleteTodo"
+    />
   </div>
 </template>
 
@@ -29,7 +33,11 @@ export default {
       todos.value.splice(index, 1);
     };
 
-    return { addTodo, todos, deleteTodo };
+    const toggleTodo = (index) => {
+      todos.value[index].completed = !todos.value[index].completed;
+    };
+
+    return { addTodo, todos, deleteTodo, toggleTodo };
   },
 };
 </script>
