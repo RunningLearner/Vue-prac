@@ -6,6 +6,7 @@
       type="text"
       v-model="searchText"
       placeholder="Search..."
+      @keyup.enter="searchTodo"
     />
     <hr />
     <TodoSimpleForm @add-todo="addTodo" />
@@ -78,7 +79,7 @@ export default {
       currentPage.value = page;
       try {
         const res = await axios.get(
-          `http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
+          `http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
         );
         numberOfTodos.value = res.headers["x-total-count"];
         todos.value = res.data;
@@ -93,11 +94,12 @@ export default {
       error.value = "";
 
       try {
-        const res = await axios.post(`http://localhost:3000/todos`, {
+        await axios.post(`http://localhost:3000/todos`, {
           subject: todo.subject,
           completed: todo.completed,
         });
-        todos.value.push(res.data);
+
+        getTodo(1);
       } catch (err) {
         console.log(err);
         error.value = "Something went wrong";
@@ -131,18 +133,19 @@ export default {
       }
     };
 
-    watch(searchText, () => {
-      getTodo(1);
-    });
-    // const filteredTodos = computed(() => {
-    //   if (searchText.value) {
-    //     return todos.value.filter((todo) => {
-    //       return todo.subject.includes(searchText.value);
-    //     });
-    //   }
+    let timeout = null;
 
-    //   return todos.value;
-    // });
+    const searchTodo = () => {
+      clearTimeout(timeout);
+      getTodo(1);
+    };
+
+    watch(searchText, () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        getTodo(1);
+      }, 1000);
+    });
 
     return {
       searchText,
@@ -150,8 +153,8 @@ export default {
       todos,
       deleteTodo,
       toggleTodo,
-      // filteredTodos,
       error,
+      searchTodo,
       numberOfPages,
       currentPage,
       getTodo,
