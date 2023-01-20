@@ -1,11 +1,11 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">Seunam</a>
+      <router-link class="navbar-brand" to="/">RunningLearner</router-link>
 
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/todos">Todos</a>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <router-link class="nav-link" to="/todos">Todos</router-link>
         </li>
       </ul>
     </div>
