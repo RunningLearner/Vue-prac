@@ -42,6 +42,7 @@ import { useRoute, useRouter } from "vue-router";
 import { computed, onUnmounted, ref } from "vue";
 import _ from "lodash";
 import Toast from "@/components/Toast.vue";
+import { useToast } from "@/composables/toast";
 
 export default {
   components: { Toast },
@@ -51,15 +52,8 @@ export default {
     const todo = ref(null);
     const originalTodo = ref(null);
     const loading = ref(true);
-    const showToast = ref(false);
-    const toastMessage = ref("");
-    const toastAlert = ref("");
-    const timeout = ref(null);
     const todoId = route.params.id;
-
-    onUnmounted(() => {
-      clearTimeout(timeout.value);
-    });
+    const { showToast, toastMessage, toastAlert, triggerToast } = useToast();
 
     const getTodo = async () => {
       try {
@@ -81,17 +75,6 @@ export default {
     };
 
     getTodo();
-
-    const triggerToast = (message, type = "success") => {
-      toastMessage.value = message;
-      toastAlert.value = type;
-      showToast.value = true;
-      timeout.value = setTimeout(() => {
-        toastMessage.value = "";
-        toastAlert.value = "";
-        showToast.value = false;
-      }, 2000);
-    };
 
     const onSave = async () => {
       try {
