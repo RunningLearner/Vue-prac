@@ -1,56 +1,53 @@
 <template>
-  <router-view />
-  <div class="container">
-    <h2>To-Do List</h2>
-    <input
-      class="form-control"
-      type="text"
-      v-model="searchText"
-      placeholder="Search..."
-      @keyup.enter="searchTodo"
-    />
-    <hr />
-    <TodoSimpleForm @add-todo="addTodo" />
-    <div style="color: red">{{ error }}</div>
+  <h2>To-Do List</h2>
+  <input
+    class="form-control"
+    type="text"
+    v-model="searchText"
+    placeholder="Search..."
+    @keyup.enter="searchTodo"
+  />
+  <hr />
+  <TodoSimpleForm @add-todo="addTodo" />
+  <div style="color: red">{{ error }}</div>
 
-    <div v-if="!todos.length">추가된 Todo가 없습니다!</div>
-    <TodoList
-      :todos="todos"
-      @toggle-todo="toggleTodo"
-      @delete-todo="deleteTodo"
-    />
-    <hr />
-    <nav aria-label=" Page navigation example">
-      <ul class="pagination">
-        <li v-if="currentPage !== 1" class="page-item">
-          <a
-            style="cursor: pointer"
-            class="page-link"
-            @click="getTodo(currentPage - 1)"
-            >Prev</a
-          >
-        </li>
-        <li
-          v-for="page in numberOfPages"
-          :key="page"
-          class="page-item"
-          :class="currentPage === page ? 'active' : ''"
+  <div v-if="!todos.length">추가된 Todo가 없습니다!</div>
+  <TodoList
+    :todos="todos"
+    @toggle-todo="toggleTodo"
+    @delete-todo="deleteTodo"
+  />
+  <hr />
+  <nav aria-label=" Page navigation example">
+    <ul class="pagination">
+      <li v-if="currentPage !== 1" class="page-item">
+        <a
+          style="cursor: pointer"
+          class="page-link"
+          @click="getTodo(currentPage - 1)"
+          >Prev</a
         >
-          <a style="cursor: pointer" class="page-link" @click="getTodo(page)">{{
-            page
-          }}</a>
-        </li>
-        <li v-if="currentPage !== numberOfPages" class="page-item">
-          <a
-            style="cursor: pointer"
-            class="page-link"
-            @click="getTodo(currentPage + 1)"
-            >Next</a
-          >
-        </li>
-      </ul>
-    </nav>
-  </div>
+      </li>
+      <li
+        v-for="page in numberOfPages"
+        :key="page"
+        class="page-item"
+        :class="currentPage === page ? 'active' : ''"
+      >
+        <a style="cursor: pointer" class="page-link" @click="getTodo(page)">{{
+          page
+        }}</a>
+      </li>
+      <li v-if="currentPage !== numberOfPages" class="page-item">
+        <a
+          style="cursor: pointer"
+          class="page-link"
+          @click="getTodo(currentPage + 1)"
+          >Next</a
+        >
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>
