@@ -1,53 +1,60 @@
 <template>
-  <h2>To-Do List</h2>
-  <input
-    class="form-control"
-    type="text"
-    v-model="searchText"
-    placeholder="Search..."
-    @keyup.enter="searchTodo"
-  />
-  <hr />
-  <TodoSimpleForm @add-todo="addTodo" />
-  <div style="color: red">{{ error }}</div>
+  <div>
+    <div class="d-flex justify-content-between m-3">
+      <h2>To-Do List</h2>
+      <button @click="moveToCreatePage" class="btn btn-primary">
+        Create Todo
+      </button>
+    </div>
+    <input
+      class="form-control"
+      type="text"
+      v-model="searchText"
+      placeholder="Search..."
+      @keyup.enter="searchTodo"
+    />
+    <hr />
+    <TodoSimpleForm @add-todo="addTodo" />
+    <div style="color: red">{{ error }}</div>
 
-  <div v-if="!todos.length">추가된 Todo가 없습니다!</div>
-  <TodoList
-    :todos="todos"
-    @toggle-todo="toggleTodo"
-    @delete-todo="deleteTodo"
-  />
-  <hr />
-  <nav aria-label=" Page navigation example">
-    <ul class="pagination">
-      <li v-if="currentPage !== 1" class="page-item">
-        <a
-          style="cursor: pointer"
-          class="page-link"
-          @click="getTodo(currentPage - 1)"
-          >Prev</a
+    <div v-if="!todos.length">추가된 Todo가 없습니다!</div>
+    <TodoList
+      :todos="todos"
+      @toggle-todo="toggleTodo"
+      @delete-todo="deleteTodo"
+    />
+    <hr />
+    <nav aria-label=" Page navigation example">
+      <ul class="pagination">
+        <li v-if="currentPage !== 1" class="page-item">
+          <a
+            style="cursor: pointer"
+            class="page-link"
+            @click="getTodo(currentPage - 1)"
+            >Prev</a
+          >
+        </li>
+        <li
+          v-for="page in numberOfPages"
+          :key="page"
+          class="page-item"
+          :class="currentPage === page ? 'active' : ''"
         >
-      </li>
-      <li
-        v-for="page in numberOfPages"
-        :key="page"
-        class="page-item"
-        :class="currentPage === page ? 'active' : ''"
-      >
-        <a style="cursor: pointer" class="page-link" @click="getTodo(page)">{{
-          page
-        }}</a>
-      </li>
-      <li v-if="currentPage !== numberOfPages" class="page-item">
-        <a
-          style="cursor: pointer"
-          class="page-link"
-          @click="getTodo(currentPage + 1)"
-          >Next</a
-        >
-      </li>
-    </ul>
-  </nav>
+          <a style="cursor: pointer" class="page-link" @click="getTodo(page)">{{
+            page
+          }}</a>
+        </li>
+        <li v-if="currentPage !== numberOfPages" class="page-item">
+          <a
+            style="cursor: pointer"
+            class="page-link"
+            @click="getTodo(currentPage + 1)"
+            >Next</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
   <Toast v-if="showToast" :message="toastMessage" :type="toastAlert" />
 </template>
 
@@ -58,6 +65,7 @@ import TodoList from "@/components/TodoList.vue";
 import axios from "axios";
 import Toast from "@/components/Toast.vue";
 import { useToast } from "@/composables/toast";
+import { useRouter } from "vue-router";
 
 export default {
   components: {
@@ -66,6 +74,7 @@ export default {
     Toast,
   },
   setup() {
+    const router = useRouter();
     const todos = ref([]);
     const error = ref("");
     const numberOfTodos = ref(0);
@@ -140,6 +149,12 @@ export default {
       }
     };
 
+    const moveToCreatePage = () => {
+      router.push({
+        name: "TodoCreate",
+      });
+    };
+
     let timeout = null;
 
     const searchTodo = () => {
@@ -168,6 +183,7 @@ export default {
       showToast,
       toastAlert,
       toastMessage,
+      moveToCreatePage,
     };
   },
 };
