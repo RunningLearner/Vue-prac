@@ -29,8 +29,6 @@ export default {
   setup() {
     const { showToast, toastMessage, toastAlert, triggerToast } = useToast();
 
-    console.log(showToast.value);
-
     return {
       showToast,
       toastMessage,
