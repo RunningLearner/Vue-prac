@@ -3,22 +3,19 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title fs-5" id="exampleModalLabel">Modal title</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
+          <h5 class="modal-title fs-5">Delete Todo</h5>
+          <button type="button" class="btn-close">
             <span @click="onClose">&times;</span>
           </button>
         </div>
-        <div class="modal-body">...</div>
+        <div class="modal-body">Are you sure to delete?</div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" @click="onClose">
             Close
           </button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-danger" @click="onDelete">
+            Delete
+          </button>
         </div>
       </div>
     </div>
@@ -31,7 +28,12 @@ export default {
     const onClose = () => {
       emit("close");
     };
-    return { onClose };
+
+    const onDelete = () => {
+      emit("delete");
+    };
+
+    return { onClose, onDelete };
   },
 };
 </script>
