@@ -22,8 +22,11 @@
 </template>
 
 <script>
+import { getCurrentInstance } from "@vue/runtime-core";
 export default {
-  setup(props, { emit }) {
+  setup() {
+    const { emit } = getCurrentInstance();
+
     const onClose = () => {
       emit("close");
     };
