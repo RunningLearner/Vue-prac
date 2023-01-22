@@ -5,7 +5,7 @@
       <div class="col-6">
         <Input
           v-model:subject="todo.subject"
-          label="SUbject"
+          label="Subject"
           :error="subjectError"
         />
       </div>
@@ -44,9 +44,6 @@
       Cancel
     </button>
   </form>
-  <transition name="fade">
-    <Toast v-if="showToast" :message="toastMessage" :type="toastAlert" />
-  </transition>
 </template>
 
 <script>
@@ -54,12 +51,11 @@ import axios from "@/axios";
 import { useRoute, useRouter } from "vue-router";
 import { computed, ref } from "vue";
 import _ from "lodash";
-import Toast from "@/components/Toast.vue";
 import { useToast } from "@/composables/toast";
 import Input from "@/components/Input.vue";
 
 export default {
-  components: { Toast, Input },
+  components: { Input },
   props: {
     editing: {
       type: Boolean,
