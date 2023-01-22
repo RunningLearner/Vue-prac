@@ -49,12 +49,6 @@
       "subject": "ㄱㅈㄱ21",
       "completed": true,
       "id": 11
-    },
-    {
-      "subject": "hello",
-      "completed": false,
-      "body": "hi@",
-      "id": 12
     }
   ]
 }
